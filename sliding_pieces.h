@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bitboard.h"
+#include "chess_types.h"
 
 Bitboard south_attacks(Bitboard piece_bb, Bitboard empty)
 {

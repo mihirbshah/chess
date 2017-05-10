@@ -8,13 +8,6 @@
 #include <algorithm>
 #include <cassert>
 
-// macro to generate unsigned long long constants
-#define C64(constantU64) constantU64##ULL
-
-// 64 bit
-typedef unsigned long long Bitboard;
-typedef std::vector<short> BitPos;
-
 void disp_bb(Bitboard b, const std::string& header = std::string())
 {
 	std::cout << header << ":\n\n";

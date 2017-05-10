@@ -1,7 +1,7 @@
 #pragma once
 
 #include "bitboard.h"
-
+#include "chess_types.h"
 
 Bitboard pawn_north_fill(Bitboard b)
 {
@@ -149,7 +149,6 @@ Bitboard wpawns_single_push_targets(Bitboard wpawns, Bitboard empty)
 
 Bitboard wpawns_double_push_targets(Bitboard wpawns, Bitboard empty)
 {
-	const Bitboard rank4 = C64(0x00000000FF000000);
 	return wpawns_single_push_targets(wpawns_single_push_targets(wpawns, empty), empty) & rank4;
 }
 
@@ -160,7 +159,6 @@ Bitboard bpawns_single_push_targets(Bitboard bpawns, Bitboard empty)
 
 Bitboard bpawns_double_push_targets(Bitboard bpawns, Bitboard empty)
 {
-	const Bitboard rank5 = C64(0x000000FF00000000);
 	return bpawns_single_push_targets(bpawns_single_push_targets(bpawns, empty), empty) & rank5;
 }
 
@@ -172,7 +170,6 @@ Bitboard wpawns_able_to_push(Bitboard wpawns, Bitboard empty)
 
 Bitboard wpawns_able_to_dbl_push(Bitboard wpawns, Bitboard empty)
 {
-	const Bitboard rank4 = C64(0x00000000FF000000);
 	Bitboard empty_rank3_for_rank4 = south_one(empty & rank4) & empty;
 	return wpawns_able_to_push(wpawns, empty_rank3_for_rank4);
 }
@@ -184,7 +181,6 @@ Bitboard bpawns_able_to_push(Bitboard bpawns, Bitboard empty)
 
 Bitboard bpawns_able_to_dbl_push(Bitboard bpawns, Bitboard empty)
 {
-	const Bitboard rank5 = C64(0x000000FF00000000);
 	Bitboard empty_rank6_for_rank5 = north_one(empty & rank5) & empty;
 	return bpawns_able_to_push(bpawns, empty_rank6_for_rank5);
 }
