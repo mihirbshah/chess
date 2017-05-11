@@ -355,3 +355,46 @@ Bitboard bpawn_center_lever(Bitboard wpawns, Bitboard bpawns)
 	return (bpawn_east_lever(wpawns, bpawns) & fileD) |
 		   (bpawn_west_lever(wpawns, bpawns) & fileE);
 }
+
+
+// defended/defender pawns
+Bitboard wpawn_defended_from_west(Bitboard wpawns)
+{
+	return wpawns & wpawns_east_attacks(wpawns);
+}
+
+Bitboard wpawn_defended_from_east(Bitboard wpawns)
+{
+	return wpawns & wpawns_west_attacks(wpawns);
+}
+
+Bitboard bpawn_defended_from_west(Bitboard bpawns)
+{
+	return bpawns & bpawns_east_attacks(bpawns);
+}
+
+Bitboard bpawn_defended_from_east(Bitboard bpawns)
+{
+	return bpawns & bpawns_west_attacks(bpawns);
+}
+
+
+Bitboard wpawn_defenders_from_west(Bitboard wpawns)
+{
+	return wpawns & bpawns_west_attacks(wpawns);
+}
+
+Bitboard wpawn_defenders_from_east(Bitboard wpawns)
+{
+	return wpawns & bpawns_east_attacks(wpawns);
+}
+
+Bitboard bpawn_defenders_from_west(Bitboard bpawns)
+{
+	return bpawns & wpawns_west_attacks(bpawns);
+}
+
+Bitboard bpawn_defenders_from_east(Bitboard bpawns)
+{
+	return bpawns & wpawns_east_attacks(bpawns);
+}
