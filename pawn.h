@@ -279,3 +279,79 @@ Bitboard bpawn_rams(Bitboard wpawns, Bitboard bpawns)
 {
 	return north_one(wpawns) & bpawns;
 }
+
+
+// pawn levers
+Bitboard wpawn_east_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return wpawns & bpawns_west_attacks(bpawns);
+}
+
+Bitboard wpawn_west_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return wpawns & bpawns_east_attacks(bpawns);
+}
+
+Bitboard wpawn_any_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return wpawn_east_lever(wpawns, bpawns) | wpawn_west_lever(wpawns, bpawns);
+}
+
+Bitboard bpawn_east_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return bpawns & wpawns_west_attacks(wpawns);
+}
+
+Bitboard bpawn_west_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return bpawns & wpawns_east_attacks(wpawns);
+}
+
+Bitboard bpawn_any_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return bpawn_east_lever(wpawns, bpawns) | bpawn_west_lever(wpawns, bpawns);
+}
+
+Bitboard wpawn_inner_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	const Bitboard abc_files = C64(0x0707070707070707);
+	const Bitboard fgh_files = C64(0xE0E0E0E0E0E0E0E0);
+	return (wpawn_east_lever(wpawns, bpawns) & abc_files) |
+		   (wpawn_west_lever(wpawns, bpawns) & fgh_files);
+}
+
+Bitboard wpawn_outer_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	const Bitboard bcd_files = C64(0x0E0E0E0E0E0E0E0E);
+	const Bitboard efg_files = C64(0x7070707070707070);
+	return (wpawn_east_lever(wpawns, bpawns) & efg_files) |
+		   (wpawn_west_lever(wpawns, bpawns) & bcd_files);
+}
+
+Bitboard wpawn_center_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return (wpawn_east_lever(wpawns, bpawns) & fileD) |
+		   (wpawn_west_lever(wpawns, bpawns) & fileE);
+}
+
+Bitboard bpawn_inner_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	const Bitboard abc_files = C64(0x0707070707070707);
+	const Bitboard fgh_files = C64(0xE0E0E0E0E0E0E0E0);
+	return (bpawn_east_lever(wpawns, bpawns) & abc_files) |
+		   (bpawn_west_lever(wpawns, bpawns) & fgh_files);
+}
+
+Bitboard bpawn_outer_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	const Bitboard bcd_files = C64(0x0E0E0E0E0E0E0E0E);
+	const Bitboard efg_files = C64(0x7070707070707070);
+	return (bpawn_east_lever(wpawns, bpawns) & efg_files) |
+		   (bpawn_west_lever(wpawns, bpawns) & bcd_files);
+}
+
+Bitboard bpawn_center_lever(Bitboard wpawns, Bitboard bpawns)
+{
+	return (bpawn_east_lever(wpawns, bpawns) & fileD) |
+		   (bpawn_west_lever(wpawns, bpawns) & fileE);
+}
