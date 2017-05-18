@@ -425,3 +425,28 @@ Bitboard pawn_duo(Bitboard pawns)
 
 // TODO Implement pawn_trio, pawn_quart
 
+
+// open, closed, half-open, semi-closed files
+Bitboard pawn_closed_files(Bitboard wpawns, Bitboard bpawns)
+{
+	return pawn_file_fill(wpawns) & pawn_file_fill(bpawns);
+}
+
+Bitboard pawn_open_files(Bitboard wpawns, Bitboard bpawns)
+{
+	return ~(pawn_file_fill(wpawns) | pawn_file_fill(bpawns));
+}
+
+Bitboard pawn_half_open_or_open_files(Bitboard pawns)
+{
+	return ~pawn_file_fill(pawns);
+}
+
+Bitboard wpawn_half_open_file(Bitboard wpawns, Bitboard bpawns)
+{
+	return pawn_half_open_or_open_files(wpawns) ^ pawn_open_files(wpawns, bpawns);
+}
+
+// TODO Implement semi-closed files
+
+
