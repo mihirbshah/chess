@@ -165,5 +165,9 @@ int main()
 	disp_bb(knight_attacks(knight), "Knight attacks");
     std::cout << "Knight Distance between a1 and h8: " << knight_distance(a1, h8) << "\n";*/
 
-    return 0;
+	Bitboard pawns = C64(0x7006000);
+	disp_bb(pawns, "Pawns");
+	disp_bb(pawn_duo(pawns), "Duo");
+
+	return 0;
 }

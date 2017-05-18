@@ -398,3 +398,30 @@ Bitboard bpawn_defenders_from_east(Bitboard bpawns)
 {
 	return bpawns & wpawns_east_attacks(bpawns);
 }
+
+
+// neighbours
+Bitboard pawns_with_east_neighbours(Bitboard pawns)
+{
+	return pawns & west_one(pawns);
+}
+
+Bitboard pawns_with_west_neighbours(Bitboard pawns)
+{
+	return pawns & east_one(pawns);
+}
+
+Bitboard pawn_duo(Bitboard pawns)
+{
+	Bitboard with_east_neighbours = pawns_with_east_neighbours(pawns);
+	Bitboard with_west_neighbours = pawns_with_west_neighbours(pawns);
+	Bitboard with_one_exclusive_neighbour = with_east_neighbours ^ with_west_neighbours;
+	Bitboard with_exclusive_east_neighbour = with_one_exclusive_neighbour & with_east_neighbours;
+	Bitboard with_exclusive_west_neighbour = with_one_exclusive_neighbour & with_west_neighbours;
+	Bitboard duo_west_one = with_exclusive_east_neighbour & (with_exclusive_west_neighbour >> 1);
+	Bitboard duo_east_one = duo_west_one << 1;
+	return duo_west_one | duo_east_one;
+}
+
+// TODO Implement pawn_trio, pawn_quart
+
