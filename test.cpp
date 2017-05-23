@@ -165,9 +165,14 @@ int main()
 	disp_bb(knight_attacks(knight), "Knight attacks");
     std::cout << "Knight Distance between a1 and h8: " << knight_distance(a1, h8) << "\n";*/
 
-	Bitboard pawns = C64(0x7006000);
+	/*Bitboard pawns = C64(0x7006000);
 	disp_bb(pawns, "Pawns");
-	disp_bb(pawn_duo(pawns), "Duo");
+	disp_bb(pawn_duo(pawns), "Duo");*/
+
+	Bitboard knights = C64(0x8000000);
+	disp_bb(knights, "Knights");
+	disp_bb(knight_attacks(knights), "knight_attacks");
+	disp_bb(fork_target_squares(C64(0x28000000)), "Knight fork location given target squares");
 
 	return 0;
 }

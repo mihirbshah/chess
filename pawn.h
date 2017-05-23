@@ -448,5 +448,8 @@ Bitboard wpawn_half_open_file(Bitboard wpawns, Bitboard bpawns)
 }
 
 // TODO Implement semi-closed files
+// TODO Implement http://chessprogramming.wikispaces.com/Pawn+Pattern+and+Properties#Properties-Based on Spans
+
+
 
 
