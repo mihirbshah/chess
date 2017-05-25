@@ -4,6 +4,7 @@
 #include "pawn.h"
 #include "sliding_pieces.h"
 #include "knight.h"
+#include "king.h"
 #include <iostream>
 
 int main()
@@ -169,10 +170,13 @@ int main()
 	disp_bb(pawns, "Pawns");
 	disp_bb(pawn_duo(pawns), "Duo");*/
 
-	Bitboard knights = C64(0x8000000);
+	/*Bitboard knights = C64(0x8000000);
 	disp_bb(knights, "Knights");
 	disp_bb(knight_attacks(knights), "knight_attacks");
-	disp_bb(fork_target_squares(C64(0x28000000)), "Knight fork location given target squares");
+	disp_bb(fork_target_squares(C64(0x28000000)), "Knight fork location given target squares");*/
+
+	setup_king_attacks_bb();
+	disp_bb(king_attacks(Position::a8), "Attack bb for King at a4");
 
 	return 0;
 }
