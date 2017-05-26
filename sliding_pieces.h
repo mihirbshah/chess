@@ -114,4 +114,4 @@ Bitboard sw_attacks(Bitboard piece_bb, Bitboard empty)
 }
 
 // TODO Implement Kogge-Stone algorithm for occluded fill & compare with Dumb7 fill above
-
+// TODO Implement Rotated/Magic bitboards based sliding piece attacks [http://chessprogramming.wikispaces.com/Sliding+Piece+Attacks]
