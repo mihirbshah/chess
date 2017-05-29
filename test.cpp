@@ -182,8 +182,16 @@ int main()
 	disp_bb(pawn_attacks(Position::c7, Piece::nWhite), "Pawn attacks for wpawn on c7");
 	disp_bb(pawn_attacks(Position::c3, Piece::nBlack), "Pawn attacks for bpawn on c3");*/
 
-	setup_knight_attacks_bb();
-	disp_bb(knight_attacks(Position::d4), "Attack bb for Knight at d4");
+	/*setup_knight_attacks_bb();
+	disp_bb(knight_attacks(Position::d4), "Attack bb for Knight at d4");*/
+
+	Bitboard empty = C64(0xbe53bdfbd77b98b6);
+	disp_bb(empty, "Empty Squares");
+	setup_lookup_table();
+	disp_bb(rook_attacks(Position::f5, empty), "Rook attacks for rook at f5");
+	disp_bb(bishop_attacks(Position::f5, empty), "Bishop attacks for bishop at f5");
+	disp_bb(queen_attacks(Position::f5, empty), "Queen attacks for queen at f5");
+
 
 
 	return 0;

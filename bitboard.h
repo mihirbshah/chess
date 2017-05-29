@@ -174,6 +174,11 @@ void setup_lookup_table()
 		lookup[i] = C64(1) << i;
 }
 
+Bitboard board(Position sq)
+{
+	return lookup[sq];
+}
+
 bool test(Bitboard x, Position pos)
 {
 	return x & lookup[pos];

@@ -113,5 +113,28 @@ Bitboard sw_attacks(Bitboard piece_bb, Bitboard empty)
 	return sw_one(flood);
 }
 
+Bitboard rook_attacks(Position sq, Bitboard empty)
+{
+	Bitboard b = board(sq);
+	return north_attacks(b, empty) |
+		   south_attacks(b, empty) |
+		   east_attacks(b, empty)  |
+		   west_attacks(b, empty);
+}
+
+Bitboard bishop_attacks(Position sq, Bitboard empty)
+{
+	Bitboard b = board(sq);
+	return ne_attacks(b, empty) |
+		   nw_attacks(b, empty) |
+		   se_attacks(b, empty)  |
+		   sw_attacks(b, empty);
+}
+
+Bitboard queen_attacks(Position sq, Bitboard empty)
+{
+	return rook_attacks(sq, empty) | bishop_attacks(sq, empty);
+}
+
 // TODO Implement Kogge-Stone algorithm for occluded fill & compare with Dumb7 fill above
 // TODO Implement Rotated/Magic bitboards based sliding piece attacks [http://chessprogramming.wikispaces.com/Sliding+Piece+Attacks]
