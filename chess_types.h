@@ -22,6 +22,20 @@ typedef enum
 	InvalidPos
 } Position;
 
+typedef enum
+{
+	nWhite,  // all white pieces
+	nBlack,  // all black pieces
+	nPawn,   // all pawns
+	nKnight, // all knights
+	nBishop, // all bishops
+	nRook,   // all rooks
+	nQueen,  // all queens
+	nKing,   // all kings
+	InvalidPiece
+} Piece;
+
+
 const Bitboard rank1 = C64(0x00000000000000ff);
 const Bitboard rank2 = C64(0x000000000000ff00);
 const Bitboard rank3 = C64(0x0000000000ff0000);

@@ -2,7 +2,6 @@
 
 #include "bitboard.h"
 #include "chess_types.h"
-#include "chess_board.h" // TODO pawn.h should not include chess_board.h
 
 Bitboard pawn_north_fill(Bitboard b)
 {

@@ -185,12 +185,44 @@ int main()
 	/*setup_knight_attacks_bb();
 	disp_bb(knight_attacks(Position::d4), "Attack bb for Knight at d4");*/
 
-	Bitboard empty = C64(0xbe53bdfbd77b98b6);
+	/*Bitboard empty = C64(0xbe53bdfbd77b98b6);
 	disp_bb(empty, "Empty Squares");
 	setup_lookup_table();
 	disp_bb(rook_attacks(Position::f5, empty), "Rook attacks for rook at f5");
 	disp_bb(bishop_attacks(Position::f5, empty), "Bishop attacks for bishop at f5");
-	disp_bb(queen_attacks(Position::f5, empty), "Queen attacks for queen at f5");
+	disp_bb(queen_attacks(Position::f5, empty), "Queen attacks for queen at f5");*/
+
+	setup_lookup_table();
+	setup_pawn_attacks_bb();
+	setup_knight_attacks_bb();
+	setup_king_attacks_bb();
+	ChessBoard board;
+	board.disp_cboard();
+	Move m1(e2, e4, nPawn, nWhite);
+	board.quite_move(m1);
+	board.disp_cboard("After move e2-e4");
+	m1 = Move(d7, d5, nPawn, nBlack);
+	board.quite_move(m1);
+	board.disp_cboard("After move d7-d5");
+	m1 = Move(e4, d5, nPawn, nWhite, nPawn, nBlack);
+	board.capture_move(m1);
+	board.disp_cboard("After move e4-d5");
+	m1 = Move(c7, c6, nPawn, nBlack);
+	board.quite_move(m1);
+	board.disp_cboard("After move c7-c6");
+	m1 = Move(d1, f3, nQueen, nWhite);
+	board.quite_move(m1);
+	board.disp_cboard("After move d1-f3");
+	m1 = Move(c8, e6, nBishop, nBlack);
+	board.quite_move(m1);
+	board.disp_cboard("After move c8-e6");
+	m1 = Move(f1, c4, nBishop, nWhite);
+	board.quite_move(m1);
+	board.disp_cboard("After move f1-c4");
+	m1 = Move(g8, f6, nKnight, nBlack);
+	board.quite_move(m1);
+	board.disp_cboard("After move g8-f6");
+	disp_bb(board.attacks_to(Position::d5), "Attacks on d5");
 
 
 

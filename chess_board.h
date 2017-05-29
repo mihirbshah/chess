@@ -2,6 +2,10 @@
 
 #include "bitboard.h"
 #include "chess_types.h"
+#include "pawn.h"
+#include "knight.h"
+#include "king.h"
+#include "sliding_pieces.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -12,19 +16,6 @@ struct Move;
 class ChessBoard
 {
  public:
-	enum Piece
-	{
-		nWhite,  // all white pieces
-		nBlack,  // all black pieces
-		nPawn,   // all pawns
-		nKnight, // all knights
-		nBishop, // all bishops
-		nRook,   // all rooks
-		nQueen,  // all queens
-		nKing,   // all kings
-		InvalidPiece
-	};
-
 	ChessBoard();
 
 	void disp_cboard(const std::string& header = "Board");
@@ -32,13 +23,35 @@ class ChessBoard
 	void quite_move(Move m);
 	void capture_move(Move m);
 
+	Bitboard pawns() { return pieceBB[nPawn]; }
+	Bitboard knights() { return pieceBB[nKnight]; }
+	Bitboard bishops() { return pieceBB[nBishop]; }
+	Bitboard rooks() { return pieceBB[nRook]; }
+	Bitboard queens() { return pieceBB[nQueen]; }
+	Bitboard kings() { return pieceBB[nKing]; }
+
+	Bitboard white_pawns() { return pieceBB[nPawn] & pieceBB[nWhite]; }
+	Bitboard white_knights() { return pieceBB[nKnight] & pieceBB[nWhite]; }
+	Bitboard white_bishops() { return pieceBB[nBishop] & pieceBB[nWhite]; }
+	Bitboard white_rooks() { return pieceBB[nRook] & pieceBB[nWhite]; }
+	Bitboard white_queens() { return pieceBB[nQueen] & pieceBB[nWhite]; }
+	Bitboard white_kings() { return pieceBB[nKing] & pieceBB[nWhite]; }
+	Bitboard black_pawns() { return pieceBB[nPawn] & pieceBB[nBlack]; }
+	Bitboard black_knights() { return pieceBB[nKnight] & pieceBB[nBlack]; }
+	Bitboard black_bishops() { return pieceBB[nBishop] & pieceBB[nBlack]; }
+	Bitboard black_rooks() { return pieceBB[nRook] & pieceBB[nBlack]; }
+	Bitboard black_queens() { return pieceBB[nQueen] & pieceBB[nBlack]; }
+	Bitboard black_kings() { return pieceBB[nKing] & pieceBB[nBlack]; }
+
+	Bitboard attacks_to(Position sq);
+
  private:
 	Bitboard pieceBB[8];
 	Bitboard occupied_sq;
 	Bitboard empty_sq;
 };
 
-typedef ChessBoard::Piece Piece;
+//typedef ChessBoard::Piece Piece;
 
 ChessBoard::ChessBoard()
 {
@@ -108,10 +121,10 @@ struct Move
 	{
 		to = InvalidPos;
 		from = InvalidPos;
-		piece = color = c_piece = c_color = ChessBoard::InvalidPiece;
+		piece = color = c_piece = c_color = InvalidPiece;
 	}
 
-	Move(Position from_, Position to_, Piece piece_, Piece color_, Piece c_piece_ = ChessBoard::InvalidPiece, Piece c_color_ = ChessBoard::InvalidPiece)
+	Move(Position from_, Position to_, Piece piece_, Piece color_, Piece c_piece_ = InvalidPiece, Piece c_color_ = InvalidPiece)
 	{
 		from = from_;
 		to = to_;
@@ -124,8 +137,8 @@ struct Move
 
 void ChessBoard::quite_move(Move m)
 {
- 	Bitboard fromBB = lookup[m.from];
-	Bitboard toBB = lookup[m.to];
+ 	Bitboard fromBB = board(m.from);
+	Bitboard toBB = board(m.to);
 	Bitboard fromtoBB = fromBB ^ toBB;
 	pieceBB[m.piece] ^= fromtoBB;
 	pieceBB[m.color] ^= fromtoBB;
@@ -135,8 +148,8 @@ void ChessBoard::quite_move(Move m)
 
 void ChessBoard::capture_move(Move m)
 {
- 	Bitboard fromBB = lookup[m.from];
-	Bitboard toBB = lookup[m.to];
+ 	Bitboard fromBB = board(m.from);
+	Bitboard toBB = board(m.to);
 	Bitboard fromtoBB = fromBB ^ toBB;
 	pieceBB[m.piece] ^= fromtoBB;
 	pieceBB[m.color] ^= fromtoBB;
@@ -144,4 +157,19 @@ void ChessBoard::capture_move(Move m)
 	pieceBB[m.c_color] ^= toBB;
 	occupied_sq ^= fromBB;
 	empty_sq ^= fromBB;
+}
+
+Bitboard ChessBoard::attacks_to(Position sq)
+{
+	Bitboard bishop_queens, rook_queens;
+	bishop_queens = rook_queens = queens();
+	bishop_queens |= bishops();
+	rook_queens |= rooks();
+
+	return (pawn_attacks(sq, nWhite) & black_pawns()) |
+		   (pawn_attacks(sq, nBlack) & white_pawns()) |
+		   (knight_attacks(sq) & knights()) |
+		   (king_attacks(sq) & kings()) |
+		   (bishop_attacks(sq, empty_sq) & bishop_queens) |
+		   (rook_attacks(sq, empty_sq) & rook_queens);
 }
