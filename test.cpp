@@ -172,15 +172,19 @@ int main()
 
 	/*Bitboard knights = C64(0x8000000);
 	disp_bb(knights, "Knights");
-	disp_bb(knight_attacks(knights), "knight_attacks");
+	disp_bb(calc_knight_attacks(knights), "knight_attacks");
 	disp_bb(fork_target_squares(C64(0x28000000)), "Knight fork location given target squares");*/
 
 	/*setup_king_attacks_bb();
 	disp_bb(king_attacks(Position::a8), "Attack bb for King at a4");*/
 
-	setup_pawn_attacks_bb();
+	/*setup_pawn_attacks_bb();
 	disp_bb(pawn_attacks(Position::c7, Piece::nWhite), "Pawn attacks for wpawn on c7");
-	disp_bb(pawn_attacks(Position::c3, Piece::nBlack), "Pawn attacks for bpawn on c3");
+	disp_bb(pawn_attacks(Position::c3, Piece::nBlack), "Pawn attacks for bpawn on c3");*/
+
+	setup_knight_attacks_bb();
+	disp_bb(knight_attacks(Position::d4), "Attack bb for Knight at d4");
+
 
 	return 0;
 }

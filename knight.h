@@ -21,7 +21,7 @@ Bitboard so_we_we(Bitboard b) { return (b >> 10) & not_gh_file; }
 Bitboard so_so_we(Bitboard b) { return (b >> 17) & not_h_file; }
 
 // Multiple Knight attacks
-Bitboard knight_attacks(Bitboard b)
+Bitboard calc_knight_attacks(Bitboard b)
 {
 	Bitboard l1 = (b >> 1) & not_h_file;
 	Bitboard l2 = (b >> 2) & not_g_h_file;
@@ -32,8 +32,25 @@ Bitboard knight_attacks(Bitboard b)
 	return (h1 << 16) | (h1 >> 16) | (h2 << 8) | (h2 >> 8);
 }
 
+namespace{
+	Bitboard knight_attacks_bb[64];
+};
+
+void setup_knight_attacks_bb()
+{
+	Bitboard b = C64(0x1);
+	for (int sq = 0; sq < 64; ++sq, b<<=1)
+		knight_attacks_bb[sq] = calc_knight_attacks(b);
+}
+
+Bitboard knight_attacks(Position sq)
+{
+	return knight_attacks_bb[sq];
+}
+
+
 // Knight fill
-Bitboard knight_fill(Bitboard knights) { return knight_attacks(knights) | knights; }
+Bitboard knight_fill(Bitboard knights) { return calc_knight_attacks(knights) | knights; }
 
 // Knight Fork
 Bitboard fork_target_squares(Bitboard targets)
@@ -84,7 +101,7 @@ int calc_knight_distance(Bitboard b1, Bitboard b2)
 	int d = 0;
 	while ((b1 & b2) == 0)
 	{
-		b1 = knight_attacks(b1); ++d;
+		b1 = calc_knight_attacks(b1); ++d;
 	}
 	return d;
 }
