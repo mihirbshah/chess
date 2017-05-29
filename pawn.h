@@ -2,6 +2,7 @@
 
 #include "bitboard.h"
 #include "chess_types.h"
+#include "chess_board.h" // TODO pawn.h should not include chess_board.h
 
 Bitboard pawn_north_fill(Bitboard b)
 {
@@ -234,6 +235,26 @@ Bitboard bpawns_dbl_attacks(Bitboard bpawns)
 Bitboard bpawns_single_attacks(Bitboard bpawns)
 {
 	return bpawns_east_attacks(bpawns) ^ bpawns_west_attacks(bpawns);
+}
+
+namespace{
+	Bitboard pawn_attacks_bb[2][64];
+};
+
+void setup_pawn_attacks_bb()
+{
+	Bitboard b = C64(0x1);
+	for (int sq = 0; sq < 64; ++sq, b<<=1)
+	{
+		pawn_attacks_bb[0][sq] = wpawns_any_attacks(b);
+		pawn_attacks_bb[1][sq] = bpawns_any_attacks(b);
+	}
+}
+
+Bitboard pawn_attacks(Position sq, Piece color)
+{
+	// TODO color should not be of type Piece
+	return pawn_attacks_bb[color][sq];
 }
 
 // pawn sets which can capture
