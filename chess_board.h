@@ -23,27 +23,23 @@ class ChessBoard
 	void quite_move(Move m);
 	void capture_move(Move m);
 
-	Bitboard pawns() { return pieceBB[nPawn]; }
-	Bitboard knights() { return pieceBB[nKnight]; }
-	Bitboard bishops() { return pieceBB[nBishop]; }
-	Bitboard rooks() { return pieceBB[nRook]; }
-	Bitboard queens() { return pieceBB[nQueen]; }
-	Bitboard kings() { return pieceBB[nKing]; }
-
-	Bitboard white_pawns() { return pieceBB[nPawn] & pieceBB[nWhite]; }
-	Bitboard white_knights() { return pieceBB[nKnight] & pieceBB[nWhite]; }
-	Bitboard white_bishops() { return pieceBB[nBishop] & pieceBB[nWhite]; }
-	Bitboard white_rooks() { return pieceBB[nRook] & pieceBB[nWhite]; }
-	Bitboard white_queens() { return pieceBB[nQueen] & pieceBB[nWhite]; }
-	Bitboard white_kings() { return pieceBB[nKing] & pieceBB[nWhite]; }
-	Bitboard black_pawns() { return pieceBB[nPawn] & pieceBB[nBlack]; }
-	Bitboard black_knights() { return pieceBB[nKnight] & pieceBB[nBlack]; }
-	Bitboard black_bishops() { return pieceBB[nBishop] & pieceBB[nBlack]; }
-	Bitboard black_rooks() { return pieceBB[nRook] & pieceBB[nBlack]; }
-	Bitboard black_queens() { return pieceBB[nQueen] & pieceBB[nBlack]; }
-	Bitboard black_kings() { return pieceBB[nKing] & pieceBB[nBlack]; }
+	Bitboard all_pawns() { return pieceBB[nPawn]; }
+	Bitboard all_knights() { return pieceBB[nKnight]; }
+	Bitboard all_bishops() { return pieceBB[nBishop]; }
+	Bitboard all_rooks() { return pieceBB[nRook]; }
+	Bitboard all_queens() { return pieceBB[nQueen]; }
+	Bitboard all_kings() { return pieceBB[nKing]; }
+	Bitboard pawns(Piece side) { return pieceBB[nPawn] & pieceBB[nWhite + side]; }
+	Bitboard knights(Piece side) { return pieceBB[nKnight] & pieceBB[nWhite + side]; }
+	Bitboard bishops(Piece side) { return pieceBB[nBishop] & pieceBB[nWhite + side]; }
+	Bitboard rooks(Piece side) { return pieceBB[nRook] & pieceBB[nWhite + side]; }
+	Bitboard queens(Piece side) { return pieceBB[nQueen] & pieceBB[nWhite + side]; }
+	Bitboard kings(Piece side) { return pieceBB[nKing] & pieceBB[nWhite + side]; }
+	Bitboard empty() { return empty_sq; }
+	Bitboard occupied() { return occupied_sq; }
 
 	Bitboard attacks_to(Position sq);
+	bool is_attacked(Position sq, Piece side);
 
  private:
 	Bitboard pieceBB[8];
@@ -162,14 +158,24 @@ void ChessBoard::capture_move(Move m)
 Bitboard ChessBoard::attacks_to(Position sq)
 {
 	Bitboard bishop_queens, rook_queens;
-	bishop_queens = rook_queens = queens();
-	bishop_queens |= bishops();
-	rook_queens |= rooks();
+	bishop_queens = rook_queens = all_queens();
+	bishop_queens |= all_bishops();
+	rook_queens |= all_rooks();
 
-	return (pawn_attacks(sq, nWhite) & black_pawns()) |
-		   (pawn_attacks(sq, nBlack) & white_pawns()) |
-		   (knight_attacks(sq) & knights()) |
-		   (king_attacks(sq) & kings()) |
+	return (pawn_attacks(sq, nWhite) & pawns(nBlack)) |
+		   (pawn_attacks(sq, nBlack) & pawns(nWhite)) |
+		   (knight_attacks(sq) & all_knights()) |
+		   (king_attacks(sq) & all_kings()) |
 		   (bishop_attacks(sq, empty_sq) & bishop_queens) |
 		   (rook_attacks(sq, empty_sq) & rook_queens);
+}
+
+bool ChessBoard::is_attacked(Position sq, Piece side)
+{
+	if (pawn_attacks(sq, Piece(side^1)) & pawns(side)) return true;
+	if (knight_attacks(sq) & knights(side))  return true;
+	if (king_attacks(sq) & kings(side)) return true;
+	if (bishop_attacks(sq, empty_sq) & (bishops(side) | queens(side))) return true;
+	if (rook_attacks(sq, empty_sq) & (rooks(side) | queens(side))) return true;
+	return false;
 }

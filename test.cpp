@@ -223,6 +223,8 @@ int main()
 	board.quite_move(m1);
 	board.disp_cboard("After move g8-f6");
 	disp_bb(board.attacks_to(Position::d5), "Attacks on d5");
+	std::cout << "Is d5 attacked by black? " << board.is_attacked(Position::d5, nBlack) << "\n";
+	//std::cout << "Is d5 attacked by white? " << board.is_attacked(Position::d5, nWhite) << "\n";
 
 
 
